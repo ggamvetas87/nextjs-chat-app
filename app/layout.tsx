@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Converso - AI Chat App",
+  title: "Converso - AI Mock Chat App",
   description: "A simple AI chat application built with Next.js and Socket.io",
 };
 
