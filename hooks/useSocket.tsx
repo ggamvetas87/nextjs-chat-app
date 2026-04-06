@@ -1,26 +1,25 @@
 // hooks/useSocket.tsx
-
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import {
-    EV_CONNECT,
-    EV_DISCONNECT,
-    EV_TYPING,
-    EV_INCOMING,
-    EV_OUTGOING
+  EV_CONNECT,
+  EV_DISCONNECT,
+  EV_TYPING,
+  EV_INCOMING,
+  EV_OUTGOING
 } from "@/libs/constants";
 import { MessageType, SocketIOProps } from "@/types/socket";
 
-export function useSocket(
-  {
-    host,
-    path,
-    withCredentials
-}: SocketIOProps
-) {
+export function useSocket({
+  host,
+  path,
+  withCredentials
+}: SocketIOProps) {
+
   const socketRef = useRef<Socket | null>(null);
+  const mountedRef = useRef(true);
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -30,53 +29,59 @@ export function useSocket(
     throw new Error("Please provide a path for the WebSocket connection");
   }
 
-  useEffect(() => {
-    let mounted = true;
+  /**
+   * Initialize WebSocket connection
+   */
+  const initConnection = async () => {
 
-    async function initSocket() {
-      // Initialize socket server (important!)
-      await fetch(path);
-
-      const socket = io(host ?? window.location.origin, {
-        path,
-        withCredentials,
-        transports: ["websocket"]
-      });
-
-      socketRef.current = socket;
-
-      socket.on(EV_CONNECT, () => {
-        if (!mounted) return;
-        console.log("Socket connected:", socket.id);
-        setConnected(true);
-      });
-
-      socket.on(EV_DISCONNECT, () => {
-        if (!mounted) return;
-        setConnected(false);
-      });
-
-      socket.on(EV_TYPING, () => {
-        if (!mounted) return;
-        setIsTyping(true);
-      });
-
-      socket.on(EV_INCOMING, (msg: MessageType) => {
-        if (!mounted) return;
-
-        setMessages(prev => [...prev, msg]);
-        setIsTyping(false);
-      });
+    // prevent multiple connections
+    if (socketRef.current) {
+      return socketRef.current;
     }
 
-    initSocket();
+    // fetch to ensure server is awake (for serverless deployments)
+    await fetch(path);
 
-    return () => {
-      mounted = false;
-      socketRef.current?.disconnect();
-    };
-  }, [host, path, withCredentials]);
+    const socket = io(host ?? window.location.origin, {
+      path,
+      withCredentials,
+      transports: ["websocket"]
+    });
 
+    socketRef.current = socket;
+
+    socket.on(EV_CONNECT, () => {
+    if (!mountedRef.current) return;
+
+        console.log("Socket connected:", socket.id);
+        setConnected(true);
+    });
+
+    socket.on(EV_DISCONNECT, () => {
+        if (!mountedRef.current) return;
+
+        setConnected(false);
+    });
+
+    socket.on(EV_TYPING, () => {
+        if (!mountedRef.current) return;
+
+        setIsTyping(true);
+    });
+
+    socket.on(EV_INCOMING, (msg: MessageType) => {
+    if (!mountedRef.current) return;
+
+    setMessages(prev => [...prev, msg]);
+        setIsTyping(false);
+    });
+
+    return socket;
+  };
+
+  /**
+   * Send message to server
+   */
   const sendMessage = (content: string) => {
     if (!socketRef.current) return;
 
@@ -93,10 +98,32 @@ export function useSocket(
     setIsTyping(true);
   };
 
+  /**
+   * Reset chat state
+   */
+  const resetChat = () => {
+    setMessages([]);
+    setIsTyping(false);
+  };
+
+  /**
+   * Disconnect socket
+   */
+  const disconnect = () => {
+    socketRef.current?.disconnect();
+    socketRef.current = null;
+
+    setConnected(false);
+  };
+
   return {
     messages,
     isTyping,
     connected,
-    sendMessage
+
+    initConnection,
+    sendMessage,
+    resetChat,
+    disconnect
   };
 }

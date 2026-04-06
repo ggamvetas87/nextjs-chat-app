@@ -1,0 +1,83 @@
+// context/chatContext.tsx
+"use client";
+
+import { 
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useCallback
+} from "react";
+import { useSocket } from "@/hooks/useSocket";
+import { SOCKET_PATH } from "@/libs/constants";
+import { MessageType } from "@/types/socket";
+import { Socket } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+
+interface ChatContextType {
+  messages: MessageType[];
+  isTyping: boolean;
+  connected: boolean;
+  chatStarted: boolean;
+  startChat: () => Promise<void>;
+  newChat: () => void;
+  closeChat: () => void;
+  initConnection: () => Promise<Socket<DefaultEventsMap, DefaultEventsMap>>;
+  sendMessage: (content: string) => void;
+  resetChat: () => void;
+  disconnect: () => void;
+}
+
+const ChatContext = createContext<ChatContextType | null>(null);
+
+export function ChatProvider({
+  children
+}: {
+  children: React.ReactNode
+}) {
+  const socket = useSocket({
+    path: SOCKET_PATH,
+    withCredentials: true
+  });
+
+  const [chatStarted, setChatStarted] = useState(false);
+
+  const startChat = useCallback(async () => {
+    await socket.initConnection();
+    setChatStarted(true);
+  }, [socket]);
+
+  const newChat = useCallback(() => {
+    socket.resetChat();
+  }, [socket]);
+
+  const closeChat = useCallback(() => {
+    socket.disconnect();
+    socket.resetChat();
+    setChatStarted(false);
+  }, [socket]);
+
+  return (
+    <ChatContext.Provider
+      value={useMemo(() => ({
+        chatStarted,
+        startChat,
+        newChat,
+        closeChat,
+        ...socket
+      }), [chatStarted, socket, startChat, newChat, closeChat])}
+    >
+      {children}
+    </ChatContext.Provider>
+  );
+}
+
+export const useChatContext = () => {
+  const ctx = useContext(ChatContext);
+
+  if (!ctx) {
+    throw new Error("useChatContext must be used inside ChatProvider");
+  }
+
+  return ctx;
+};

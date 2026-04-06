@@ -1,3 +1,4 @@
+// types/socket.ts
 import { Server as HTTPServer } from "node:http";
 import { NextApiResponse } from "next";
 import { Server as SocketIOServer } from "socket.io";

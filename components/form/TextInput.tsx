@@ -1,8 +1,8 @@
 // components/TextInput.tsx
-
 "use client";
 
 import { useState } from "react";
+import Button from "@/components/interactions/Button";
 
 type Props = {
   onSend: (msg: string) => void;
@@ -24,7 +24,7 @@ export default function TextInput({ onSend }: Props) {
     <form
       id="chat-form"
       onSubmit={submit}
-      className="border-t p-3 flex gap-2 bg-white"
+      className="border-t p-3 flex gap-2 bg-white rounded-xl"
     >
       <input
         value={value}
@@ -33,12 +33,12 @@ export default function TextInput({ onSend }: Props) {
         className="flex-1 border rounded-lg text-gray-700 px-3 py-2"
       />
 
-      <button
+      <Button
         className="bg-blue-500 text-white px-4 rounded-lg"
         type="submit"
       >
         Send
-      </button>
+      </Button>
     </form>
   );
 }
