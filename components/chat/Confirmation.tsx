@@ -17,13 +17,15 @@ export default function Confirmation({ onConfirm, onCancel }: ConfirmationProps)
             </p>
             <div className="flex justify-center gap-4">
               <Button
-                className="px-4 py-2 bg-red-500 text-white rounded"
+                importance="primary"
+                className="px-4 py-2"
                 onClick={onConfirm}
               >
                 Yes
               </Button>
               <Button
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded"
+                importance="secondary"
+                className="px-4 py-2"
                 onClick={onCancel}
               >
                 No

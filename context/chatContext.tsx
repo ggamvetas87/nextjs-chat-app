@@ -19,9 +19,12 @@ interface ChatContextType {
   isTyping: boolean;
   connected: boolean;
   chatStarted: boolean;
+  chatMinimized: boolean;
   startChat: () => Promise<void>;
   newChat: () => void;
   closeChat: () => void;
+  minimizeChat: () => void;
+  restoreChat: () => void;
   initConnection: () => Promise<Socket<DefaultEventsMap, DefaultEventsMap>>;
   sendMessage: (content: string) => void;
   resetChat: () => void;
@@ -41,31 +44,54 @@ export function ChatProvider({
   });
 
   const [chatStarted, setChatStarted] = useState(false);
+  const [chatMinimized, setChatMinimized] = useState(false);
 
   const startChat = useCallback(async () => {
     await socket.initConnection();
     setChatStarted(true);
+    setChatMinimized(false);
   }, [socket]);
 
   const newChat = useCallback(() => {
     socket.resetChat();
   }, [socket]);
 
+  const minimizeChat = useCallback(() => {
+    setChatMinimized(true);
+  }, []);
+
+  const restoreChat = useCallback(() => {
+    setChatMinimized(false);
+  }, []);
+
   const closeChat = useCallback(() => {
     socket.disconnect();
     socket.resetChat();
     setChatStarted(false);
+    setChatMinimized(false);
   }, [socket]);
 
   return (
     <ChatContext.Provider
       value={useMemo(() => ({
         chatStarted,
+        chatMinimized,
         startChat,
         newChat,
+        minimizeChat,
+        restoreChat,
         closeChat,
         ...socket
-      }), [chatStarted, socket, startChat, newChat, closeChat])}
+      }), [
+        chatStarted,
+        chatMinimized,
+        socket,
+        startChat,
+        newChat,
+        minimizeChat,
+        restoreChat,
+        closeChat
+      ])}
     >
       {children}
     </ChatContext.Provider>

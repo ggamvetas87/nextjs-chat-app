@@ -5,37 +5,31 @@ import { useState } from "react";
 import { useChatContext } from "@/context/chatContext";
 import Header from "@/components/chat/Header";
 import Body from "@/components/chat/Body";
-import Confirmation from "./Confirmation";
+import Confirmation from "@/components/chat/Confirmation";
 
-type Props = {
-  onClose?: () => void;
-};
-
-export default function ChatWindow({ onClose }: Props) {
-  const { closeChat } = useChatContext();
+export default function ChatWindow() {
+  const { chatMinimized, closeChat, minimizeChat, restoreChat } = useChatContext();
 
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   
-  const handleClose = () => {
-    setIsConfirmationVisible(true);
+  const showConfirmation = (value = false) => {
+    setIsConfirmationVisible(value);
   };
 
   const handleConfirm = () => {
-    setIsConfirmationVisible(false);
+    showConfirmation(false);
     closeChat();
   };
 
   const handleCancel = () => {
-    setIsConfirmationVisible(false);
+    showConfirmation(false);
   };
-
 
   return (
     <div
       className="
-      fixed bottom-24 right-6
-      w-[380px]
-      h-[600px]
+      fixed bottom-0 right-0 w-full h-full  /* default mobile fullscreen */
+      md:bottom-6 md:right-6 md:w-[380px] md:h-[600px]
       bg-white
       rounded-xl
       shadow-2xl
@@ -44,7 +38,10 @@ export default function ChatWindow({ onClose }: Props) {
       animate-in slide-in-from-bottom fade-in duration-300
       "
     >
-      <Header onClose={handleClose} />
+      <Header
+        onMinimize={() => chatMinimized ? restoreChat() : minimizeChat()}
+        onClose={() => showConfirmation(true)}
+      />
       <Body />
       {isConfirmationVisible && (
         <Confirmation 

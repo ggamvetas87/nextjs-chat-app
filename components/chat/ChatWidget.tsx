@@ -7,17 +7,17 @@ import Bubble from "@/components/chat/Bubble";
 import ChatWindow from "@/components/chat/ChatWindow";
 
 export default function ChatWidget() {
-  const { chatStarted, startChat } = useChatContext();
+  const { chatStarted, chatMinimized, startChat } = useChatContext();
 
   return (
-    <>
-      {!chatStarted && (
+    <div className="animate-in slide-in-from-bottom fade-in duration-300">
+      {(!chatStarted || chatMinimized) && (
         <Bubble onClick={startChat} />
       )}
 
-      {chatStarted && (
+      {chatStarted && !chatMinimized && (
         <ChatWindow />
       )}
-    </>
+    </div>
   );
 }
