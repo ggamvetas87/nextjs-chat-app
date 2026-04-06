@@ -1,7 +1,7 @@
 // hooks/useSocket.tsx
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import {
   EV_CONNECT,
@@ -10,7 +10,7 @@ import {
   EV_INCOMING,
   EV_OUTGOING
 } from "@/libs/constants";
-import { MessageType, SocketIOProps } from "@/types/socket";
+import { MessageType, SocketIOProps, OutgoingPayload } from "@/types/socket";
 
 export function useSocket({
   host,
@@ -80,7 +80,7 @@ export function useSocket({
   };
 
   /**
-   * Send message to server
+   * Send normal user message
    */
   const sendMessage = (content: string) => {
     if (!socketRef.current) return;
@@ -107,6 +107,30 @@ export function useSocket({
   };
 
   /**
+   * Send Chuck Norris category
+   */
+  const sendJokeCategory = (category: string) => {
+    if (!socketRef.current) return;
+
+    const userMsg: MessageType = {
+      id: Date.now().toString(),
+      role: "user",
+      content: `Tell me a "${category}" Chuck Norris joke`
+    };
+
+    setMessages(prev => [...prev, userMsg]);
+
+    const payload: OutgoingPayload = {
+      type: "joke_category",
+      category
+    };
+
+    socketRef.current.emit(EV_OUTGOING, payload);
+
+    setIsTyping(true);
+  };
+
+  /**
    * Disconnect socket
    */
   const disconnect = () => {
@@ -116,6 +140,12 @@ export function useSocket({
     setConnected(false);
   };
 
+  useEffect(() => {
+    return () => {
+        mountedRef.current = false;
+    };
+    }, []);
+
   return {
     messages,
     isTyping,
@@ -123,6 +153,7 @@ export function useSocket({
 
     initConnection,
     sendMessage,
+    sendJokeCategory,
     resetChat,
     disconnect
   };

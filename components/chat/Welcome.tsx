@@ -1,31 +1,26 @@
 // components/chat/Welcome.tsx
-
 "use client";
 
 import Button from "@/components/interactions/Button";
 
+type Prompt =
+  | { type: "text"; value: string }
+  | { type: "joke_category"; category: string };
+
 type Props = {
-  onSelectPrompt: (prompt: string) => void;
+  sendMessage: (content: string) => void;
+  sendJokeCategory: (category: string) => void;
 };
 
-export default function Welcome({ onSelectPrompt }: Props) {
-  const prompts = [
-    {
-        text: "🎬 Suggest a good movie",
-        value: "Suggest a good movie"
-    },
-    {
-        text: "🚀 Top sci-fi films",
-        value: "Top sci-fi films"
-    },
-    {
-        text: "📺 Best Netflix series",
-        value: "Best Netflix series"
-    },
-    {
-        text: "😂 Recommend a comedy movie",
-        value: "Recommend a comedy movie"
-    }
+export default function Welcome({ sendMessage, sendJokeCategory }: Props) {
+  const jokeCategories = [
+    "animal",
+    "career",
+    "dev",
+    "food",
+    "movie",
+    "science",
+    "sport"
   ];
 
   return (
@@ -36,21 +31,26 @@ export default function Welcome({ onSelectPrompt }: Props) {
       </h2>
 
       <p className="mb-6 text-sm">
-        Ask me anything about movies and series.
+        Ask me anything ... and I might respond 😂
       </p>
 
-      <div className="grid gap-2 w-full max-w-md">
-        {prompts.map((prompt) => (
+      <p className="text-xs text-zinc-500 mb-2">
+        Or try a Chuck Norris joke category:
+      </p>
+
+      <div className="flex flex-wrap justify-center gap-2 max-w-md">
+        {jokeCategories.map((cat) => (
           <Button
-            key={prompt.value}
+            key={cat}
             importance="secondary"
-            onClick={() => onSelectPrompt(prompt.value)}
-            className="border rounded-lg px-4 py-2 hover:bg-zinc-100 text-left"
+            onClick={() => sendJokeCategory(cat)}
+            className="px-3 py-1 text-sm rounded-full border hover:bg-zinc-100"
           >
-            {prompt.text}
+            {cat}
           </Button>
         ))}
       </div>
+
     </div>
   );
 }

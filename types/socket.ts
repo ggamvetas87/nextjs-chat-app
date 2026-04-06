@@ -15,6 +15,7 @@ export type MessageType = {
   id: string;
   role: "user" | "assistant";
   content: string;
+  options?: string[];
 };
 
 export type SocketIOProps = {
@@ -22,3 +23,10 @@ export type SocketIOProps = {
   path: string;
   withCredentials?: boolean;
 };
+
+export type OutgoingPayload =
+  | string
+  | {
+      type: "joke_category";
+      category: string;
+    };

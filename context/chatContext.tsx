@@ -27,6 +27,7 @@ interface ChatContextType {
   restoreChat: () => void;
   initConnection: () => Promise<Socket<DefaultEventsMap, DefaultEventsMap>>;
   sendMessage: (content: string) => void;
+  sendJokeCategory: (category: string) => void;
   resetChat: () => void;
   disconnect: () => void;
 }
