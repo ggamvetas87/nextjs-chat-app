@@ -7,7 +7,7 @@ import Bubble from "@/components/chat/Bubble";
 import ChatWindow from "@/components/chat/ChatWindow";
 
 export default function ChatWidget() {
-  const { chatStarted, startChat, closeChat } = useChatContext();
+  const { chatStarted, startChat } = useChatContext();
 
   return (
     <>

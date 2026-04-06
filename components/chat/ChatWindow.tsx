@@ -1,14 +1,35 @@
 // components/chat/ChatWindow.tsx
 "use client";
 
-import Body from "@/components/chat/Body";
+import { useState } from "react";
+import { useChatContext } from "@/context/chatContext";
 import Header from "@/components/chat/Header";
+import Body from "@/components/chat/Body";
+import Confirmation from "./Confirmation";
 
 type Props = {
   onClose?: () => void;
 };
 
 export default function ChatWindow({ onClose }: Props) {
+  const { closeChat } = useChatContext();
+
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  
+  const handleClose = () => {
+    setIsConfirmationVisible(true);
+  };
+
+  const handleConfirm = () => {
+    setIsConfirmationVisible(false);
+    closeChat();
+  };
+
+  const handleCancel = () => {
+    setIsConfirmationVisible(false);
+  };
+
+
   return (
     <div
       className="
@@ -23,8 +44,14 @@ export default function ChatWindow({ onClose }: Props) {
       animate-in slide-in-from-bottom fade-in duration-300
       "
     >
-      <Header onClose={onClose} />
+      <Header onClose={handleClose} />
       <Body />
+      {isConfirmationVisible && (
+        <Confirmation 
+          onConfirm={() => handleConfirm()}
+          onCancel={() => handleCancel()}
+        />
+      )}
     </div>
   );
 }
