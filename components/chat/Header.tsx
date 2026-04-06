@@ -5,7 +5,7 @@ import { useChatContext } from "@/context/chatContext";
 import Button from "@/components/interactions/Button";
 
 type HeaderProps = {
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 export default function Header({ onClose }: HeaderProps) {
@@ -13,7 +13,7 @@ export default function Header({ onClose }: HeaderProps) {
 
     const handleClose = () => {
         closeChat();
-        onClose();
+        onClose?.();
     };
         
     return (

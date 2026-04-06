@@ -16,7 +16,7 @@ export default function ChatWidget() {
       )}
 
       {chatStarted && (
-        <ChatWindow onClose={closeChat} />
+        <ChatWindow />
       )}
     </>
   );

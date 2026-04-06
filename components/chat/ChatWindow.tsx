@@ -5,7 +5,7 @@ import Body from "@/components/chat/Body";
 import Header from "@/components/chat/Header";
 
 type Props = {
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 export default function ChatWindow({ onClose }: Props) {
