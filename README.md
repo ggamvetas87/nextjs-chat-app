@@ -81,7 +81,7 @@ Chat state is handled through a custom **React Context**:
 
 ```bash
 ChatProvider
-|--- useSocket (WebSocket logic)
+  |--- useSocket (WebSocket logic)
 ```
 
 This centralizes:
@@ -172,6 +172,15 @@ yarn
 
 # Run the development server
 yarn dev
+
+# Build the project
+yarn build
+
+# Build the dockerized project based on Dockerfile
+yarn build-podman
+
+# Run the container
+yarn run-podman
 
 # Open in browser
 http://localhost:3000

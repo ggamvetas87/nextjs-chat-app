@@ -93,15 +93,20 @@ export function useSocket({
   const sendMessage = (content: string) => {
     if (!socketRef.current) return;
 
+    // Sanitize content by removing HTML tags and trimming whitespace
+    const sanitizedContent = content
+      .replaceAll(/<[^>]*>/g, "")
+      .trim();
+
     const userMsg: MessageType = {
       id: Date.now().toString(),
       role: "user",
-      content
+      content: sanitizedContent
     };
 
     setMessages(prev => [...prev, userMsg]);
 
-    socketRef.current.emit(EV_OUTGOING, content);
+    socketRef.current.emit(EV_OUTGOING, sanitizedContent);
 
     setIsTyping(true);
   };
