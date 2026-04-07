@@ -30,3 +30,8 @@ export type OutgoingPayload =
       type: "joke_category";
       category: string;
     };
+
+export type QuickRepliesType = {
+  id: string;
+  values: string[];
+};

@@ -1,5 +1,4 @@
 // components/chat/ChatBubble.tsx
-
 "use client";
 
 import Button from "@/components/interactions/Button";

@@ -17,14 +17,14 @@ export default function Button({
     children?: React.ReactNode
 }) {
     const baseClasses = `cursor-pointer inline-block 
-        text-sm md:text-base lg:text-base
-        px-3 py-1 md:px-4 md:py-1 lg:px-4 lg:py-1 
+        text-sm md:text-base
+        px-3 py-1 md:px-4 md:py-1
         rounded transition-all duration-300`;
     const importanceClasses = importance === "secondary"
-        ? "bg-black text-white hover:bg-white hover:text-black"
+        ? "bg-black text-white hover:bg-white hover:text-black hover:border hover:border-black"
         : importance === "tertiary"
         ? "bg-transparent text-white hover:text-red-500"
-        : "bg-red-500 text-white hover:bg-white hover:text-black";
+        : "bg-red-500 text-white hover:bg-transparent hover:text-red-500 hover:border hover:border-red-500";
     const disabledClasses = disabled ? "opacity-50 cursor-not-allowed" : "";
 
     return (

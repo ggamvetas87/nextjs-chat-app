@@ -5,11 +5,12 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import QuickReplies from "@/components/chat/QuickReplies";
+import { QuickRepliesType } from "@/types/socket";
 
-type Props = {
+type MessageProps = {
   role: "user" | "assistant";
   content: string;
-  options?: string[];
+  options?: QuickRepliesType;
   onOptionClick?: (option: string) => void;
 };
 
@@ -18,7 +19,7 @@ export default function Message({
   content,
   options,
   onOptionClick
-}: Props) {
+}: MessageProps) {
 
   const isUser = role === "user";
 
@@ -38,7 +39,7 @@ export default function Message({
         </div>
 
         {/* quick replies */}
-        {!isUser && (
+        {!isUser && options && (
           <QuickReplies options={options} onOptionClick={onOptionClick} />
         )}
 

@@ -58,7 +58,10 @@ export default function handler(
                         id: Date.now().toString(),
                         role: "assistant",
                         content: joke,
-                        options: categories
+                        options: { 
+                            id: Date.now().toString(),
+                            values: categories
+                        }
                     });
                 }, 1000); // simulate delay
 
