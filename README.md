@@ -220,6 +220,9 @@ Frontend / Senior Front-End Developer
 MIT License
 
 ## Demo
-https://converso.vercel.app/
+Unfortunately, this Demo **cannot be hosted** at Vercel.app
+<br>Vercel uses **serverless functions** which cannot maintain `persistent WebSocket connections`, so the socket server must run on a persistent Node runtime.
 
-Contact me for invitation code and Demo access at ggamvetas[at]gmail.com
+## Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/MYNp0xfPZ6U/maxresdefault.jpg)](https://www.youtube.com/watch?v=MYNp0xfPZ6U)
