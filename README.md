@@ -160,8 +160,8 @@ A custom React hook handles the socket lifecycle
 
 /server
   |--- /lib
-  |------ mockAI.ts
-  |------ chuckNorris.ts
+    |--- mockAI.ts
+    |--- chuckNorris.ts
 ```
 
 # ⚙️ Installation
@@ -189,9 +189,9 @@ This project demonstrates several important frontend engineering concepts:
 - Responsive UI design
 - TypeScript typing patterns
 
-🔮 Possible Improvements
+# 🔮 Possible Improvements
 
-# Future enhancements could include:
+### Future enhancements could include:
 
 - Streaming AI responses
 - Integration with OpenAI or other LLM providers
