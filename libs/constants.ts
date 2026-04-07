@@ -13,3 +13,4 @@ export const EV_FORCE_DISCONNECT = "force_disconnect";
 export const EV_CONNECT_ERROR = "connect_error";
 
 export const SOCKET_PATH = "/api/socket/setup";
+export const STORAGE_KEY = "converso_chat_messages";

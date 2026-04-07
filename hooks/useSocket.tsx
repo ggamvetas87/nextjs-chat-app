@@ -8,7 +8,8 @@ import {
   EV_DISCONNECT,
   EV_TYPING,
   EV_INCOMING,
-  EV_OUTGOING
+  EV_OUTGOING,
+  STORAGE_KEY
 } from "@/libs/constants";
 import { MessageType, SocketIOProps, OutgoingPayload } from "@/types/socket";
 
@@ -21,9 +22,16 @@ export function useSocket({
   const socketRef = useRef<Socket | null>(null);
   const mountedRef = useRef(true);
 
-  const [messages, setMessages] = useState<MessageType[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [connected, setConnected] = useState(false);
+
+  // Initialize messages from localStorage if available (for demo purposes)
+  const [messages, setMessages] = useState<MessageType[]>(() => {
+    if (typeof window === "undefined") return [];
+
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  });
 
   if (!path) {
     throw new Error("Please provide a path for the WebSocket connection");
@@ -104,6 +112,10 @@ export function useSocket({
   const resetChat = () => {
     setMessages([]);
     setIsTyping(false);
+
+    if (typeof window !== "undefined") {
+        localStorage.removeItem(STORAGE_KEY);
+    }
   };
 
   /**
@@ -140,11 +152,18 @@ export function useSocket({
     setConnected(false);
   };
 
-  useEffect(() => {
-    return () => {
-        mountedRef.current = false;
-    };
+    useEffect(() => {
+        return () => {
+            mountedRef.current = false;
+        };
     }, []);
+
+    // Persist messages in localStorage to survive page reloads (for demo purposes)
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    }, [messages]);
 
   return {
     messages,
