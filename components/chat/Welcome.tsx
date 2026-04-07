@@ -2,8 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LoadingAnimation from "@/components/chat/LoadingAnimation";
-import QuickReplies from "@/components/chat/QuickReplies";
+import LoadingAnimation from "@/components/interactions/LoadingAnimation";
+import QuickReplies from "@/components/interactions/QuickReplies";
 import { getJokeCategories } from "@/server/lib/chuckNorris";
 
 type WelcomeProps = {

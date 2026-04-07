@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { useChatContext } from "@/context/chatContext";
 import MessagesList from "@/components/chat/MessagesList";
 import TextInput from "@/components/form/TextInput";
-import TypingIndicator from "@/components/chat/TypingIndicator";
+import TypingIndicator from "@/components/interactions/TypingIndicator";
 
 export default function Body() {
     const { messages, isTyping, sendMessage } = useChatContext();
