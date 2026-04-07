@@ -7,13 +7,10 @@ import Message from "@/components/chat/Message";
 import { QuickRepliesType } from "@/types/socket";
 
 export default function MessagesList() {
-    const {messages, sendMessage, sendJokeCategory } = useChatContext();
+    const {messages, sendJokeCategory } = useChatContext();
 
     return messages.length === 0 ? (
-        <Welcome 
-            sendMessage={sendMessage}
-            sendJokeCategory={sendJokeCategory}
-        />
+        <Welcome sendJokeCategory={sendJokeCategory} />
     ) : (
         messages.map(({ id, role, content, options }) => (
             <Message

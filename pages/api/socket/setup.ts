@@ -4,7 +4,7 @@ import type { NextApiRequest } from "next";
 import type { NextApiResponseServerIO } from "@/types/socket";
 import { Server as SocketIOServer } from "socket.io";
 import { getMockResponse } from "@/server/lib/mockAI";
-import { getJoke } from "@/server/lib/chuckNorris";
+import { getJokeCategories, getJoke } from "@/server/lib/chuckNorris";
 import {
     SOCKET_PATH,
     EV_CONNECT,
@@ -42,16 +42,7 @@ export default function handler(
             if (msg.type === "joke_category") {
 
                 const joke = await getJoke(msg.category);
-
-                const categories = [
-                    "animal",
-                    "career",
-                    "dev",
-                    "food",
-                    "movie",
-                    "science",
-                    "sport"
-                ];
+                const categories = await getJokeCategories();
                 
                 setTimeout(() => {
                     socket.emit(EV_INCOMING, {
