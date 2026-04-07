@@ -4,7 +4,7 @@
 import { useEffect, useRef } from "react";
 import { useChatContext } from "@/context/chatContext";
 import MessagesList from "@/components/chat/MessagesList";
-import TextInput from "@/components/form/TextInput";
+import TextWidget from "@/components/form/TextWidget";
 import TypingIndicator from "@/components/interactions/TypingIndicator";
 
 export default function Body() {
@@ -29,7 +29,7 @@ export default function Body() {
                 {/* Reference used for scrolling to the bottom */}
                 <div ref={bottomRef} />
             </div>
-            <TextInput onSend={sendMessage} />
+            <TextWidget onSend={sendMessage} />
         </div>
     );
 }

@@ -17,6 +17,7 @@ export default function Bubble({ onClick }: Props) {
       rounded-full
       bg-blue-500
       text-white
+      hover:border hover:border-white hover:bg-blue-500/80
       text-2xl
       shadow-lg
       flex items-center justify-center

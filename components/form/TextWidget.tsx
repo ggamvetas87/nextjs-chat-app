@@ -8,7 +8,7 @@ type Props = {
   onSend: (msg: string) => void;
 };
 
-export default function TextInput({ onSend }: Props) {
+export default function TextWidget({ onSend }: Props) {
   const [value, setValue] = useState("");
 
   const submit = (e: React.FormEvent) => {
@@ -34,7 +34,10 @@ export default function TextInput({ onSend }: Props) {
       />
 
       <Button
-        className="bg-blue-500 text-white px-4 rounded-lg"
+        className="
+          bg-blue-500 hover:text-white hover:border 
+          hover:border-white hover:bg-blue-500/80
+          text-white px-4 rounded-lg"
         type="submit"
       >
         Send
