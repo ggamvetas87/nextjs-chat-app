@@ -1,6 +1,7 @@
 // components/chat/QuickReplies.tsx
 "use client";
 
+import { useChatContext } from "@/context/chatContext";
 import Button from "@/components/interactions/Button";
 import { QuickRepliesType } from "@/types/socket";
 
@@ -15,6 +16,7 @@ export default function QuickReplies({
     options,
     onOptionClick
 }: QuickRepliesProps) {
+    const { disabledQuickReplies, disableQuickReply } = useChatContext();
     const { id, values } = options || {};
 
     return values && values.length > 0 && (
@@ -26,11 +28,15 @@ export default function QuickReplies({
                 </div>
             )}
             <div data-test-id={`quick-replies-${id}`}>
-            {values.map(opt => (
+            {/* Hide quick replies if the id is disabled */}
+            {id && !disabledQuickReplies.includes(id) && values.map(opt => (
                 <Button
                     key={opt}
                     importance="secondary"
-                    onClick={() => onOptionClick?.(opt)}
+                    onClick={() => {
+                        onOptionClick?.(opt);
+                        disableQuickReply(id); // disable all options of this quick reply set after one is clicked
+                    }}
                     className="px-3 py-1 text-sm border rounded-full"
                 >
                 {opt}
