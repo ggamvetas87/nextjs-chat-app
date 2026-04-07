@@ -1,36 +1,211 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Converso Mock Chat 💬
 
-## Getting Started
+Converso Mock Chat is a modern real-time chat web application built with **Next.js, React, and WebSockets**.  
+It demonstrates a clean chat UI architecture, real-time communication using **Socket.io**, and integration with external APIs.
 
-First, run the development server:
+The project simulates an AI-like conversational assistant that can respond with mock answers, suggest prompts, and fetch fun content such as **Chuck Norris jokes** from a public API.
+
+This project was built as a **portfolio project** to demonstrate frontend architecture, real-time communication, and modern React patterns.
+
+---
+
+# 🚀 Features
+
+## 💬 Real-time Chat
+- WebSocket communication using **Socket.io**
+- Instant message delivery
+- Typing indicator simulation
+
+## 🤖 AI-like Assistant
+- Mock AI responses
+- Suggested follow-up questions
+- Quick reply buttons
+
+## 😂 Chuck Norris Joke Integration
+- Fetches joke categories
+- Users can select categories directly from the chat
+- The bot returns a random joke using the **Chuck Norris API**
+
+## 🎨 Modern Chat UI
+- Clean responsive interface
+- Mobile fullscreen chat
+- Desktop floating chat window
+- Markdown message rendering with syntax highlighting
+
+## 🧠 Smart UX
+- Suggested prompts for new conversations
+- Randomized typing messages (e.g. *Bot is typing... / Bot is thinking...*)
+- Quick reply buttons after jokes
+
+---
+
+# 🧱 Tech Stack
+
+## Frontend
+- **Next.js**
+- **React**
+- **TypeScript**
+- **TailwindCSS**
+
+## Real-time Communication
+- **Socket.io**
+
+## Rendering & Formatting
+- **React Markdown**
+- **rehype-highlight**
+- **highlight.js**
+
+## External APIs
+- **Chuck Norris API**  
+https://api.chucknorris.io
+
+---
+
+# 🏗 Architecture
+
+The project follows a **modular architecture** with separation between UI, state management, and real-time communication.
+
+## Core Layers
+
+### UI Components
+Reusable UI components such as:
+
+- `ChatWindow`
+- `Message`
+- `TypingIndicator`
+- `Welcome`
+- `Button`
+
+### State Management
+Chat state is handled through a custom **React Context**:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+ChatProvider
+|--- useSocket (WebSocket logic)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This centralizes:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- messages
+- connection state
+- typing indicator
+- chat lifecycle
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### useSocket
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+Responsibilities:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- initializing the WebSocket connection
+- sending messages
+- receiving responses
+- handling typing events
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Server API
 
-## Deploy on Vercel
+The WebSocket server runs inside a Next.js API route
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+/pages/api/socket/setup.ts
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+Responsibilities:
+
+- manage socket connections
+- simulate AI responses
+- call the Chuck Norris API
+- emit messages to clients
+
+---
+
+# 📡 WebSocket Event Flow
+
+Client → Server (EV_OUTGOING)
+
+Server → Client (EV_TYPING, EV_INCOMING)
+
+
+Example payload for Chuck Norris joke request:
+
+```json
+{
+  "type": "joke_category",
+  "category": "dev"
+}
+```
+
+
+### WebSocket Layer
+
+A custom React hook handles the socket lifecycle
+
+# 📂 Project Structure
+
+```bash
+/components
+  |--- /chat
+  |--- Welcome.tsx
+  |--- TypingIndicator.tsx
+  |--- Message.tsx
+
+/context
+  |--- chatContext.tsx
+
+/hooks
+  |--- useSocket.tsx
+
+/pages/api/socket
+  |--- setup.ts
+
+/server
+  |--- /lib
+  |------ mockAI.ts
+  |------ chuckNorris.ts
+```
+
+# ⚙️ Installation
+
+```bash
+# Install dependencies
+yarn
+
+# Run the development server
+yarn dev
+
+# Open in browser
+http://localhost:3000
+```
+
+# 🎯 Key Concepts Demonstrated
+
+This project demonstrates several important frontend engineering concepts:
+
+- Real-time communication with WebSockets
+- Custom React hooks
+- Context-based state management
+- Component-driven UI architecture
+- API integration
+- Responsive UI design
+- TypeScript typing patterns
+
+🔮 Possible Improvements
+
+# Future enhancements could include:
+
+- Streaming AI responses
+- Integration with OpenAI or other LLM providers
+- Message persistence with a database
+- Authentication
+- Multi-user chat rooms
+- Chat history storage
+- Message reactions
+
+# 👨‍💻 Author
+
+Yiannis Gamvetas
+Frontend / Senior Front-End Developer
+
+# 📄 License
+
+MIT License
